@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bootcamp/bloc/cubit/add_note_cubit.dart';
 import 'package:flutter_bootcamp/home_screen.dart';
-import 'package:flutter_bootcamp/test.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) => AddNoteCubit()..loadTodos(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

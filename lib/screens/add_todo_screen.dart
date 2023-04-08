@@ -1,26 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bootcamp/utils/color_constants.dart';
-import 'package:flutter_bootcamp/utils/extension_utils.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bootcamp/bloc/cubit/add_note_cubit.dart';
+import 'package:flutter_bootcamp/models/get_todo_model.dart';
 
-class AddTodoScreen extends StatelessWidget {
+class AddTodoScreen extends StatefulWidget {
   const AddTodoScreen({super.key});
 
+  @override
+  State<AddTodoScreen> createState() => _AddTodoScreenState();
+}
+
+class _AddTodoScreenState extends State<AddTodoScreen> {
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorConstants.primaryColor,
-        title: Text(
-          'Add Tasks List',
+        backgroundColor: const Color(0xFF7CB59C),
+        title: const Text(
+          "Add Tasks List",
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
       body: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 48,
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset("assets/addTask.png"),
+            Image.asset(
+              "assets/addTask.png",
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Expanded(
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: 'To do',
+                  filled: true,
+                  fillColor: const Color(0xFFD6F1E2),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(
+                    () {
+                      var data = context.read<AddNoteCubit>();
+                      data.addNote(GetTodoModel(
+                        isChecked: false,
+                        todoTitle: controller.text,
+                      ));
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(24),
+                  backgroundColor: const Color(0xFF7CB59C),
+                ),
+                child: const Text("Add Task"),
+              ),
+            ),
           ],
         ),
-      ).addPadding(),
+      ),
     );
   }
 }

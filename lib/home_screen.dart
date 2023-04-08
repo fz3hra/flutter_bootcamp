@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bootcamp/bloc/cubit/add_note_cubit.dart';
 import 'package:flutter_bootcamp/screens/add_todo_screen.dart';
-import 'package:flutter_bootcamp/services/get_todo_services.dart';
 import 'package:flutter_bootcamp/utils/color_constants.dart';
 import 'package:flutter_bootcamp/utils/extension_utils.dart';
 import 'package:flutter_bootcamp/widgets/text_widget.dart';
 import 'package:flutter_bootcamp/widgets/todo_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +73,35 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: GetTodoServices.todoLists.length,
-                      itemBuilder: (context, index) {
-                        var item = GetTodoServices.todoLists[index];
-                        return TodoWidget(
-                          todoTitle: item.todoTitle,
-                          isChecked: item.isChecked,
+                  BlocBuilder<AddNoteCubit, AddNoteState>(
+                    builder: (context, state) {
+                      if (state is AddNoteLoaded) {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: state.model.length,
+                            itemBuilder: (context, index) {
+                              var item = state.model[index];
+                              return TodoWidget(
+                                todoTitle: item.todoTitle,
+                                isChecked: item.isChecked,
+                                index: index,
+                                check: (check) {
+                                  setState(() {
+                                    item.isChecked = check;
+                                  });
+                                },
+                                isIndex: (isIndex) {
+                                  setState(() {
+                                    isIndex = index;
+                                  });
+                                },
+                              );
+                            },
+                          ),
                         );
-                      },
-                    ),
+                      }
+                      return Container();
+                    },
                   )
                 ],
               ),

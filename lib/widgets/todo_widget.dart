@@ -4,10 +4,16 @@ import 'package:flutter_bootcamp/utils/color_constants.dart';
 class TodoWidget extends StatefulWidget {
   bool isChecked;
   String todoTitle;
+  int index;
+  Function(dynamic) check;
+  Function(dynamic) isIndex;
   TodoWidget({
     super.key,
     required this.todoTitle,
     required this.isChecked,
+    required this.index,
+    required this.check,
+    required this.isIndex,
   });
 
   @override
@@ -26,6 +32,10 @@ class _TodoWidgetState extends State<TodoWidget> {
             setState(() {
               widget.isChecked = check!;
             });
+            // if (widget.isChecked == true) {
+            //   GetTodoServices.todoLists.removeAt(widget.index);
+            //   widget.isIndex(widget.index);
+            // }
           },
         ),
         Text(widget.todoTitle),
