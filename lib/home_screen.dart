@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bootcamp/bloc/cubit/add_note_cubit.dart';
+import 'package:flutter_bootcamp/repository/get_todo_repository.dart';
 import 'package:flutter_bootcamp/screens/add_todo_screen.dart';
 import 'package:flutter_bootcamp/utils/color_constants.dart';
 import 'package:flutter_bootcamp/utils/extension_utils.dart';
@@ -73,36 +72,68 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  BlocBuilder<AddNoteCubit, AddNoteState>(
-                    builder: (context, state) {
-                      if (state is AddNoteLoaded) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: state.model.length,
-                            itemBuilder: (context, index) {
-                              var item = state.model[index];
-                              return TodoWidget(
-                                todoTitle: item.todoTitle,
-                                isChecked: item.isChecked,
-                                index: index,
-                                check: (check) {
-                                  setState(() {
-                                    item.isChecked = check;
-                                  });
-                                },
-                                isIndex: (isIndex) {
-                                  setState(() {
-                                    isIndex = index;
-                                  });
-                                },
-                              );
-                            },
-                          ),
-                        );
-                      }
-                      return Container();
-                    },
-                  )
+                  // BlocBuilder<AddNoteCubit, AddNoteState>(
+                  //   builder: (context, state) {
+                  //     if (state is AddNoteLoaded) {
+                  //       return Expanded(
+                  //         child: ListView.builder(
+                  //           itemCount: state.model.length,
+                  //           itemBuilder: (context, index) {
+                  //             var item = state.model[index];
+                  //             return TodoWidget(
+                  //               todoTitle: item.todoTitle,
+                  //               isChecked: item.isChecked,
+                  //               index: index,
+                  //               check: (check) {
+                  //                 setState(() {
+                  //                   item.isChecked = check;
+                  //                 });
+                  //               },
+                  //               isIndex: (isIndex) {
+                  //                 setState(() {
+                  //                   isIndex = index;
+                  //                 });
+                  //               },
+                  //             );
+                  //           },
+                  //         ),
+                  //       );
+                  //     }
+                  //     return Container();
+                  //   },
+                  // )
+                  FutureBuilder(
+                      future: GetTodoRepository.getTodosRepository(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var items = snapshot.data!;
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                var item = items[index];
+                                print("index $index");
+                                return TodoWidget(
+                                  todoTitle: item.title!,
+                                  isChecked: item.isChecked,
+                                  index: item.id!,
+                                  check: (check) {
+                                    setState(() {
+                                      // item.isChecked = check;
+                                    });
+                                  },
+                                  isIndex: (isIndex) {
+                                    setState(() {
+                                      isIndex = index;
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return Container();
+                      })
                 ],
               ),
             ),

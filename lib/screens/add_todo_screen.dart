@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bootcamp/bloc/cubit/add_note_cubit.dart';
-import 'package:flutter_bootcamp/models/get_todo_model.dart';
+
+import 'package:flutter_bootcamp/repository/add_todo_repository.dart';
 
 class AddTodoScreen extends StatefulWidget {
   const AddTodoScreen({super.key});
@@ -64,15 +63,18 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                 onPressed: () {
-                  setState(
-                    () {
-                      var data = context.read<AddNoteCubit>();
-                      data.addNote(GetTodoModel(
-                        isChecked: false,
-                        todoTitle: controller.text,
-                      ));
-                    },
-                  );
+                  // setState(
+                  //   () {
+                  //     var data = context.read<AddNoteCubit>();
+                  //     data.addNote(GetTodoModel(
+                  //       isChecked: false,
+                  //       todoTitle: controller.text,
+                  //     ));
+                  //   },
+                  // );
+                  setState(() {
+                    AddTodoRepository.createTodos(controller.text, false);
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(24),
