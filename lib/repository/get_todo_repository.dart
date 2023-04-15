@@ -10,9 +10,11 @@ class GetTodoRepository {
       final response = await http.get(Uri.parse(GetRequestsConstants.getTodo));
       if (response.statusCode == 200) {
         List<GetTodo> getTodos = [];
-        final res = jsonDecode(response.body);
-        getTodos
-            .addAll(List<GetTodo>.from((res).map((x) => GetTodo.fromJson(x))));
+        // deserialize incoming network call
+        var list = json.decode(response.body) as List<dynamic>;
+        // add deserialized map to a list, where fromJson method is turning the map obtained to a single object
+        getTodos.addAll(list.map((e) => GetTodo.fromJson(e)).toList());
+        // returning list of objects iterated on
         return getTodos;
       } else {
         throw Exception("Unable to get todos");
