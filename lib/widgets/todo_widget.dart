@@ -6,14 +6,14 @@ import 'package:flutter_bootcamp/utils/color_constants.dart';
 class TodoWidget extends StatefulWidget {
   bool isChecked;
   String todoTitle;
-  int index;
+  int id;
   Function(dynamic) check;
   Function(dynamic) isIndex;
   TodoWidget({
     super.key,
     required this.todoTitle,
     required this.isChecked,
-    required this.index,
+    required this.id,
     required this.check,
     required this.isIndex,
   });
@@ -37,12 +37,10 @@ class _TodoWidgetState extends State<TodoWidget> {
                 setState(() {
                   widget.isChecked = check!;
                   UpdateRepository.updateTodos(
-                      widget.isChecked, (widget.index).toString());
+                    widget.isChecked,
+                    widget.id.toString(),
+                  );
                 });
-                // if (widget.isChecked == true) {
-                //   GetTodoServices.todoLists.removeAt(widget.index);
-                //   widget.isIndex(widget.index);
-                // }
               },
             ),
             Text(widget.todoTitle),
@@ -51,7 +49,7 @@ class _TodoWidgetState extends State<TodoWidget> {
         GestureDetector(
           onTap: () {
             setState(() {
-              DeleteRepository.deleteTodos((widget.index).toString());
+              DeleteRepository.deleteTodos((widget.id).toString());
             });
           },
           child: const Icon(

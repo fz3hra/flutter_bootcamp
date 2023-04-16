@@ -15,7 +15,6 @@ class DeleteRepository {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print("response ${response.body}");
       if (response.statusCode == 200) {
         return GetTodo.fromRawJson(response.body);
       } else {

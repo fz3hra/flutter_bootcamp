@@ -20,7 +20,6 @@ class UpdateRepository {
           },
         ),
       );
-      print("response ${response.body}");
       if (response.statusCode == 204) {
         return PutTodo.fromRawJson(response.body);
       } else {

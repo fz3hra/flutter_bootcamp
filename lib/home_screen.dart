@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.primaryColor,
-        title: Text(
+        title: const Text(
           'Simple Tasks List',
         ),
       ),
@@ -72,56 +72,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  // BlocBuilder<AddNoteCubit, AddNoteState>(
-                  //   builder: (context, state) {
-                  //     if (state is AddNoteLoaded) {
-                  //       return Expanded(
-                  //         child: ListView.builder(
-                  //           itemCount: state.model.length,
-                  //           itemBuilder: (context, index) {
-                  //             var item = state.model[index];
-                  //             return TodoWidget(
-                  //               todoTitle: item.todoTitle,
-                  //               isChecked: item.isChecked,
-                  //               index: index,
-                  //               check: (check) {
-                  //                 setState(() {
-                  //                   item.isChecked = check;
-                  //                 });
-                  //               },
-                  //               isIndex: (isIndex) {
-                  //                 setState(() {
-                  //                   isIndex = index;
-                  //                 });
-                  //               },
-                  //             );
-                  //           },
-                  //         ),
-                  //       );
-                  //     }
-                  //     return Container();
-                  //   },
-                  // )
                   FutureBuilder(
                       future: GetTodoRepository.getTodosRepository(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          var items = snapshot.data!;
+                          var items = snapshot.data;
                           return Expanded(
                             child: ListView.builder(
-                              itemCount: items.length,
+                              itemCount: items!.length,
                               itemBuilder: (context, index) {
                                 var item = items[index];
                                 print("index $index");
                                 return TodoWidget(
                                   todoTitle: item.title!,
                                   isChecked: item.isChecked,
-                                  index: item.id!,
-                                  check: (check) {
-                                    setState(() {
-                                      // item.isChecked = check;
-                                    });
-                                  },
+                                  id: item.id!,
+                                  check: (check) {},
                                   isIndex: (isIndex) {
                                     setState(() {
                                       isIndex = index;

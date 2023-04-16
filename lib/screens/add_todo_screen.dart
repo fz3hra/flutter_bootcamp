@@ -63,17 +63,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                 onPressed: () {
-                  // setState(
-                  //   () {
-                  //     var data = context.read<AddNoteCubit>();
-                  //     data.addNote(GetTodoModel(
-                  //       isChecked: false,
-                  //       todoTitle: controller.text,
-                  //     ));
-                  //   },
-                  // );
                   setState(() {
                     AddTodoRepository.createTodos(controller.text, false);
+                    controller.clear();
                   });
                 },
                 style: ElevatedButton.styleFrom(

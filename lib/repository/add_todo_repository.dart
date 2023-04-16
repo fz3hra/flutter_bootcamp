@@ -19,7 +19,6 @@ class AddTodoRepository {
           },
         ),
       );
-      print("response ${response.body}");
       if (response.statusCode == 201) {
         return GetTodo.fromRawJson(response.body);
       } else {
